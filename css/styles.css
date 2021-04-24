@@ -1,0 +1,51 @@
+body {
+	background-color: #1A1A1A;
+	color: #FFFFFF;
+}
+
+#navbar {
+	margin-bottom: 20px;
+}
+
+#chatbox_messageinput {
+	background-color: #212529;
+	color: white;
+}
+
+#txt_username {
+	background-color: #212529;
+	color: white;
+}
+
+#usernameform {
+		margin-left: 15%;
+		margin-right: 15%;
+}
+
+#chatbox_container {
+	border: 1px solid white;
+	margin-bottom: 20px;
+}
+
+.message {
+	margin-top: 10px;
+}
+
+#chatbox_messages {
+	height: 300px;
+	overflow: auto;
+}
+
+#time {
+	text-align: center;
+}
+
+#about_container {
+	font-size: large;
+}
+
+@media screen and (min-height: 900px) {
+  #chatbox_messages {
+    height: 500px;
+  }
+}

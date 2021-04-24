@@ -1,0 +1,19 @@
+////
+SESSION VARIABLES:
+	username
+	roomname
+	userID
+	roomID
+////
+
+
+
+asdf: Welcome to 404Chat, where privacy and anonymity is number 1 priority.
+asdf: We don't keep any information about you in our databases, and all messages are deleted every hour.
+asdf: If you want, you can request to delete your messages sooner with the click of a button.
+asdf: To create a private chatroom, use the command /create roomname [password] (where password is optional)
+asdf: To join a chatroom use the command /join roomname [password] (where password is optional as well)
+asdf: The creator of the website is not responsible or liable for any information leaks caused by you.
+asdf: This project was developed by a programming student. Take that as you will about security (more info on the about page).
+asdf: You may not write in the main channel, and if this somehow gets popular and breaks, well...
+asdf: If this is your first time here, check out the about page.
