@@ -17,6 +17,8 @@
 
 	mysqli_close($link);
 
+	die();
 /*
 It will get everyone that is in current user room and present it back.
 */
+?>

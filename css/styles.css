@@ -31,6 +31,11 @@ body {
 	margin-top: 10px;
 }
 
+#userlog_userlist {
+	height: 300px;
+	overflow: auto;
+}
+
 #chatbox_messages {
 	height: 300px;
 	overflow: auto;
@@ -48,4 +53,7 @@ body {
   #chatbox_messages {
     height: 500px;
   }
+	#userlog_userlist {
+		height: 500px;
+	}
 }

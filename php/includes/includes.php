@@ -1,7 +1,7 @@
 <?php
 	if(session_status() == PHP_SESSION_NONE) session_start();
-	include "connect.php";
-	include "functions.php";
-	include "settings.php";
-	include "prevent_curl.php";
+	include_once "connect.php";
+	include_once "functions.php";
+	include_once "settings.php";
+	include_once "prevent_curl.php";
 ?>

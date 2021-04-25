@@ -3,7 +3,8 @@
 
 	$author = protectString($_SESSION["username"]);
 	$message_string = protectString($_POST["message_content"]);
-	$message_string = encryption_404chat($message_string, 'encrypt');
+	$roomident = $_SESSION['roomID'].$_SESSION['roomname'];
+	$message_string = encrypt_data($roomident, $message_string);
 	$roomID = $_SESSION['roomID'];
 	$userID = $_SESSION['userID'];
 

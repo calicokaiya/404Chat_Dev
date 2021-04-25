@@ -8,5 +8,6 @@
 		session_destroy();
 		echo '0';
 	}
+	
 	mysqli_close($link);
 ?>

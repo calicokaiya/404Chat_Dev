@@ -1,4 +1,7 @@
 <?php
+if(!defined('BASE_ENCRYPTION_DIR')) define('BASE_ENCRYPTION_DIR', 'E:\xampp\htdocs\404chat_developer\php\includes\encryption');
+include BASE_ENCRYPTION_DIR."\\encryption.php";
+
 //Handles strings so they are safe to send to databse
 function protectString($string)
 {
@@ -7,30 +10,6 @@ function protectString($string)
   $string = htmlspecialchars($string, ENT_QUOTES);
   $string = mysqli_real_escape_string($link, $string);
   return $string;
-}
-
-//Handles all of the website's encryption
-function encryption_404chat($string, $method)
-{
-  $cipher = "AES-128-CBC";
-  $iv_length = openssl_cipher_iv_length($cipher);
-  $enc_key = 'aGF8fV2CXef8WEQfvx2XcS6fg8A9';
-  $iv = '0188932374377573';
-  $options = 0;
-
-  if(strtolower($method) == 'encrypt') {
-    $string = openssl_encrypt($string, $cipher, $enc_key, $options, $iv);
-    $string = base64_encode($string);
-    return $string;
-  }
-  else if(strtolower($method) == 'decrypt') {
-    $string = base64_decode($string);
-    $string = openssl_decrypt($string, $cipher, $enc_key, $options, $iv);
-    return $string;
-  }
-  else {
-    return 0;
-  }
 }
 
 //Allows user to redownload all messages in database
@@ -137,32 +116,39 @@ function room_is_valid($room)
 //Deals with room creation
 function createroom($link, $room, $password)
 {
+  $roomid = $_SESSION['roomID'];
+  $entry = $roomid.$room;
   //Encrypts room name and password
-  $enc_room = encryption_404chat($room, 'encrypt');
-  if($password != '') {
-    $enc_password = encryption_404chat($password, 'encrypt');
-  }
-  else {
-    $enc_password = '';
-  }
+  $enc_room = encrypt_room_data($room, $password);
+  $enc_room_name = $enc_room["roomname"];
+  $enc_room_password = $enc_room["password"];
   //Creates new room in database
-  $sql = "INSERT INTO rooms (Roomname, RoomPassword, daily_deletion) VALUES ('$enc_room', '$enc_password', '1')";
+  $sql = "INSERT INTO rooms (Roomname, RoomPassword, daily_deletion) VALUES ('$enc_room_name', '$enc_room_password', '1')";
   if(check_existing_room($link, $room)) {
     if(mysqli_query($link, $sql)) {
       api_response('Created ' . $room . ' successfully!');
+      joinroom($link, $room, $password);
+
+      //Creates encryption key in .dat file
+      $roomident = $_SESSION['roomID'].$_SESSION['roomname'];
+      $encryption_info = create_encryption_data();
+      write_to_encryption_file($roomident, $encryption_info);
     }
+  }
+  else {
+    joinroom($link, $room, $password);
   }
 }
 
 //Checks if roomname already exists to prevent duplicates
 function check_existing_room($link, $room)
 {
-  $enc_room = encryption_404chat($room, 'encrypt');
+  $enc_room = encrypt_room_data($room)["roomname"];
   $sql = "SELECT * FROM rooms WHERE Roomname = '$enc_room'";
   $numrows = mysqli_num_rows(mysqli_query($link, $sql));
   if ($numrows != 0)
   {
-    $room = encryption_404chat($room, 'decrypt');
+    $room = decrypt_room_data($room)["roomname"];
     api_response("ERROR: $room already exists. Attempting to join instead with given roomname and password instead...");
     return false;
   }
@@ -174,9 +160,10 @@ function joinroom($link, $room, $password)
 {
   $userID = $_SESSION['userID'];
   //Looks for the right room
-  $enc_room = encryption_404chat($room, 'encrypt');
+  $enc_room = encrypt_room_data($room)["roomname"];
+  api_response($enc_room);
   if($password != '') {
-    $enc_password = encryption_404chat($password, 'encrypt');
+    $enc_password = encrypt_room_data('', $password)["password"];
   }
   else {
     $enc_password = '';
@@ -190,7 +177,7 @@ function joinroom($link, $room, $password)
     {
       //Defines necessary variables to update user in database
       $roomID = $results['RoomID'];
-      $room = encryption_404chat($results['RoomName'], 'decrypt');
+      $room = decrypt_room_data($results['RoomName'])["roomname"];
       //Updates user in database
       $sql = "UPDATE users SET room_id = '$roomID' WHERE users.UserID = '$userID'";
       if (mysqli_query($link, $sql))
@@ -229,6 +216,7 @@ function get_messages($link)
 //Outputs all messages in JSON format
 function create_message_json($result)
 {
+  $roomident = $_SESSION['roomID'].$_SESSION['roomname'];
   $numrows = mysqli_num_rows($result);
   $i = 1;
   if ($numrows > 0)
@@ -240,7 +228,7 @@ function create_message_json($result)
       echo '"roomid":"' . $row['RoomID'] . '",';
       echo '"userID":"' . $row['UserID'] . '",';
       echo '"username":"' . $row['Username'] . '",';
-      echo '"content":"' . encryption_404chat($row['MessageContent'], 'decrypt') . '"}';
+      echo '"content":"' . decrypt_data($roomident, $row['MessageContent']) . '"}';
       if ($i == $numrows) {
         echo "]}";
         $last_seen = $row['MessageID'];

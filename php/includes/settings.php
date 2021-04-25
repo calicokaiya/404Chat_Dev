@@ -13,6 +13,8 @@
 	if(!defined('NEWUSERNAME_FILENAME')) define('NEWUSERNAME_FILENAME', 'new_username.php');
 	if(!defined('POSTMESSAGE_FILENAME')) define('POSTMESSAGE_FILENAME', 'post_message.php');
 	if(!defined('PRINTUSERINFO_FILENAME')) define('PRINTUSERINFO_FILENAME', 'print_user_info.php');
+	if(!defined('BASE_ENCRYPTION_DIR')) define('BASE_ENCRYPTION_DIR', 'E:\xampp\htdocs\404chat_developer\php\includes\encryption');
+
 
 	### CLOCK ###
 	if(!defined('DAILY_RESET_TIME')) define('DAILY_RESET_TIME', '00:00:00 UTC');
