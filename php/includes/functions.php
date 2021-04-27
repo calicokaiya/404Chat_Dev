@@ -131,7 +131,6 @@ function createroom($link, $room, $password)
       //Creates encryption key in .dat file
       $roomident = $_SESSION['roomID'];
       $encryption_info = create_encryption_data();
-      api_response("Encryption data: ".$roomident." : ".base64_encode($encryption_info['key'])." : ".base64_encode($encryption_info['iv']));
       write_to_encryption_file($roomident, $encryption_info);
     }
   }
@@ -161,7 +160,6 @@ function joinroom($link, $room, $password)
   $userID = $_SESSION['userID'];
   //Looks for the right room
   $enc_room = encrypt_room_data($room)["roomname"];
-  api_response($enc_room);
   if($password != '') {
     $enc_password = encrypt_room_data('', $password)["password"];
   }

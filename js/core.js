@@ -48,17 +48,19 @@ function send_message() {
 			};
 
 			//Sends messages to the database
+
 			$.ajax({
 				type: "POST",
 				url: "./php/post_message.php",
 				data: message_info,
 				error: function() {
 					alert('Error sending message. Check your connection and try again.');
-				}
+				},
 			});
 
 		}
-	} else {
+	}
+	else {
 		alert('Message must not be empty, and it must be smaller than 2000 characters.')
 	}
 
@@ -195,7 +197,6 @@ function update_time() {
 
 //Document load...
 $(document).ready(function() {
-	console.log('Jquery loaded')
 	let theme = 'dark';
 	nb_update_current_room();
 	nb_update_current_username();

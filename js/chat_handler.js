@@ -1,3 +1,13 @@
+//Takes text and outputs prepared HTML string for consistency
+function create_system_command(text) {
+	let system = [
+		'<div class=\"message\"><i>&ltSYSTEM&gt ',
+		'</i></div>'
+	];
+
+	return system[0] + text + system[1];
+}
+
 function cm_createroom(data) {
 	$.ajax({
 		type: "POST",
@@ -5,6 +15,9 @@ function cm_createroom(data) {
 		data: data,
 		success: function(response) {
 			$("#chatbox_messages").append(response);
+		},
+		complete: function() {
+			scroll_to_bottom();
 		}
 	});
 }
@@ -18,6 +31,9 @@ function cm_joinroom(data) {
 			$("#chatbox_messages").append(response);
 			nb_update_current_room();
 			update_userlog();
+		},
+		complete: function() {
+			scroll_to_bottom();
 		}
 	});
 }
@@ -25,10 +41,10 @@ function cm_joinroom(data) {
 function cm_help() {
 	console.log('Displaying help');
 	helpstring = [
-		'<i>&ltSYSTEM&gt /help displays this message</i><br>',
-		'<i>&ltSYSTEM&gt /join ROOMNAME [PASSWORD] joins a room. Password is optional. (Example: /join newroom 123)</i><br>',
-		'<i>&ltSYSTEM&gt /create ROOMNAME [PASSWORD] creates a room. Password is optional and ROOMNAME must be 1 word only.\
-		Both are case sensitive. (Example: /create newroom 123)</i><br>'
+		create_system_command("/help displays this message"),
+		create_system_command("ROOMNAME [PASSWORD] joins a room. Password is optional. (Example: /join newroom 123)"),
+		create_system_command("/create ROOMNAME [PASSWORD] creates a room. Password is optional and ROOMNAME must be 1 word only.\
+		Both are case sensitive. (Example: /create newroom 123)</i><br>"),
 	];
 
 	helpstring.forEach(command => {
@@ -37,7 +53,8 @@ function cm_help() {
 }
 
 function cm_notfound(command) {
-	$("#chatbox_messages").append('<i>&ltSYSTEM&gt "' + command + '" is not a valid command. Use /help for more info');
+	let message = create_system_command(command + " is not a valid command. Use /help for more info");
+	$("#chatbox_messages").append(message);
 }
 
 //Determines if message is command
