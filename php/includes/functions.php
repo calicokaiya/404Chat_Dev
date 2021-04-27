@@ -117,7 +117,6 @@ function room_is_valid($room)
 function createroom($link, $room, $password)
 {
   $roomid = $_SESSION['roomID'];
-  $entry = $roomid.$room;
   //Encrypts room name and password
   $enc_room = encrypt_room_data($room, $password);
   $enc_room_name = $enc_room["roomname"];
@@ -130,8 +129,9 @@ function createroom($link, $room, $password)
       joinroom($link, $room, $password);
 
       //Creates encryption key in .dat file
-      $roomident = $_SESSION['roomID'].$_SESSION['roomname'];
+      $roomident = $_SESSION['roomID'];
       $encryption_info = create_encryption_data();
+      api_response("Encryption data: ".$roomident." : ".base64_encode($encryption_info['key'])." : ".base64_encode($encryption_info['iv']));
       write_to_encryption_file($roomident, $encryption_info);
     }
   }
@@ -216,7 +216,7 @@ function get_messages($link)
 //Outputs all messages in JSON format
 function create_message_json($result)
 {
-  $roomident = $_SESSION['roomID'].$_SESSION['roomname'];
+  $roomident = $_SESSION['roomID'];
   $numrows = mysqli_num_rows($result);
   $i = 1;
   if ($numrows > 0)

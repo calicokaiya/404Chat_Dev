@@ -34,8 +34,7 @@
 
 	//Deals with encryption
 	$enc_info = create_encryption_data();
-	$roomident = '1main';
-	print_r($enc_info);
+	$roomident = '1';
 	write_to_encryption_file($roomident, $enc_info);
 	$messages_encrypted = [];
 	foreach($messages_protected as $message) {
@@ -74,5 +73,6 @@
 		}
 	}
 
+	echo "Reset database";
 	mysqli_close($link);
 ?>

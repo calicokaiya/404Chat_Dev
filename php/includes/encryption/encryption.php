@@ -1,5 +1,8 @@
 <?php
 
+  //For debugging purposes:
+  #if(!defined('BASE_ENCRYPTION_DIR')) define('BASE_ENCRYPTION_DIR', 'E:\xampp\htdocs\404chat_developer\php\includes\encryption');
+
   //Creates directory that stores the encryption keys
   function create_encrypted_directory() {
     //Generates random name

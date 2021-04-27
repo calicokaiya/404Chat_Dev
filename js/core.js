@@ -65,7 +65,6 @@ function send_message() {
 	//Resets text in message box
 	$("#chatbox_messageinput").val("");
 	scroll_to_bottom();
-	console.log('Scrolling to bottom');
 }
 
 //Downloads messages
@@ -81,12 +80,19 @@ function get_messages() {
 
 			//If we actually receive messages
 			else if(response != '0' && response != '') {
-				let jsoncontents = JSON.parse(response);
-				for (i in jsoncontents.messages) {
-					let author = jsoncontents.messages[i].username;
-					let message = jsoncontents.messages[i].content;
-					let outputstring = '<div class="message"><b>' + author + ':</b> ' + message + '</div>';
-					$("#chatbox_messages").append(outputstring);
+				try {
+					let jsoncontents = JSON.parse(response);
+					for (i in jsoncontents.messages) {
+						let author = jsoncontents.messages[i].username;
+						let message = jsoncontents.messages[i].content;
+						let outputstring = '<div class="message"><b>' + author + ':</b> ' + message + '</div>';
+						$("#chatbox_messages").append(outputstring);
+					}
+				}
+				catch(e) {
+
+				}
+				finally {
 					scroll_to_bottom();
 				}
 			}
