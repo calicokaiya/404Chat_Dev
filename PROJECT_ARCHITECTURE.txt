@@ -1,7 +1,0 @@
-////
-SESSION VARIABLES:
-	username
-	roomname
-	userID
-	roomID
-////
