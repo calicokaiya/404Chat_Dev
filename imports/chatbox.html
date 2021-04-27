@@ -13,12 +13,19 @@
 	</div>
 	<div class="row">
 		<div class="row g-3">
-			<div class="col-10 d-flex justify-content-center align-items-center">
+			<div class="col-12 d-flex justify-content-center align-items-center">
 				<label for="inputMessage">Message: </label>
-				<input type="text" id="chatbox_messageinput" class="form-control" aria-describedby="passwordHelpInline">
+				<input type="text" id="chatbox_messageinput" class="form-control" value="" style="flex: 1; margin-left: 10px">
+				<button type="button" id="sendmsg_button" class="btn btn-dark" style="margin-left: 10px">Send</button>
 			</div>
-			<div class="col-2">
-				<button type="button" id="sendmsg_button" class="btn btn-dark">Send</button>
+			<div class="row justify-content-center">
+				<form action="php/file_handling.php" method="post" enctype="multipart/form-data">
+					<div class="row d-flex align-items-center" style="padding: 10px">
+						Send a file:
+					  <input type="file" id="formFile" name="fileToUpload" style="width: 300px; margin-left: 10px">
+						<input type="submit" class="btn btn-dark" value="Upload" name="submit" style="margin-left: 10px; width:100px">
+					</div>
+				</form>
 			</div>
 		</div>
 	</div>

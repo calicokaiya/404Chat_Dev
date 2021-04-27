@@ -32,12 +32,12 @@ body {
 }
 
 #userlog_userlist {
-	height: 300px;
+	height: 100px;
 	overflow: auto;
 }
 
 #chatbox_messages {
-	height: 300px;
+	height: 275px;
 	overflow: auto;
 }
 
